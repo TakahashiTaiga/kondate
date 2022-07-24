@@ -1,0 +1,32 @@
+
+CREATE TABLE users(
+    users_id INT(16) AUTO_INCREMENT NOT NULL,
+    mail_address VARCHAR(256) NOT NULL,
+    pass VARCHAR(512) NOT NULL,
+    distance INT(8) NOT NULL,
+    PRIMARY KEY (users_id));
+
+
+CREATE TABLE recipes(
+    recipes_id INT(32) AUTO_INCREMENT NOT NULL,
+    users_id INT(16),
+    name VARCHAR(256) NOT NULL,
+    resorce VARCHAR(512),
+    way VARCHAR(1024),
+    PRIMARY KEY (recipes_id),
+    FOREIGN KEY (users_id) REFERENCES users(users_id));
+
+
+CREATE TABLE histories(
+    histories_id INT(32) AUTO_INCREMENT NOT NULL,
+    users_id INT(16),
+    recipes_id INT(32),
+    date VARCHAR(128),
+    name VARCHAR(256) NOT NULL,
+    resorce VARCHAR(512),
+    way VARCHAR(1024),
+    PRIMARY KEY (histories_id),
+    FOREIGN KEY (recipes_id) REFERENCES recipes(recipes_id),
+    FOREIGN KEY (users_id) REFERENCES users(users_id));
+    
+

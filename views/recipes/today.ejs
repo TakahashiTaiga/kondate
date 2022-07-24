@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>ホーム</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+    
+  </head>
+
+  <body>
+
+    <%- include('../common/header') %>
+  
+  <div id="contents_main">
+    <div>
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <% for (let i in contents) { %>
+                    <% if (i != 0) { %>
+                        <div class="carousel-item">
+                            <div class="d-block w-100">
+                                <div class="contents_title"><h1 class="contents_h1_font"><%- contents[i].name %></h1></div>
+            
+                                <div class="contents_resorce">
+                                    <h1 class="contents_sub_title contents_p_font">材料</h1>
+                                    <div class="contents_resorce_area"><p class="contents_p_font"><%- contents[i].resorce %></p></div>
+                                </div>
+
+                                <div class="contents_carousel_btn">
+                                    <a href="/recipes/recipe/:<%= contents[0].recipes_id%>" class="link_style">
+                                        <div class="d-grid gap-2 col-6 mx-auto">
+                                            <button type="button" class="btn btn-outline-primary">レシピへ</button>
+                                        </div>
+                                    </a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    
+                    <% } else if (i == 0) { %>
+                        <div class="carousel-item active">
+                            <div class="d-block w-100">
+                                <div class="contents_title"><h1 class="contents_h1_font"><%- contents[i].name %></h1></div>
+        
+                                <div class="contents_resorce">
+                                    <h1 class="contents_sub_title contents_p_font">材料</h1>
+                                    <div class="contents_resorce_area"><p class="contents_p_font"><%- contents[i].resorce %></p></div>
+                                </div>
+
+                                <div class="contents_carousel_btn">
+                                    <a href="/recipes/recipe/:<%= contents[0].recipes_id%>" class="link_style">
+                                        <div class="d-grid gap-2 col-6 mx-auto">
+                                            <button type="button" class="btn btn-outline-primary">レシピへ</button>
+                                        </div>
+                                    </a>
+                                </div>
+        
+                            </div>
+                        </div>
+                    <% }  %>
+                <% } %>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon icon_opacity" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon icon_opacity" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    
+  </div>    
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+
+</html>
