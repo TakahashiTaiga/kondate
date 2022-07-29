@@ -132,6 +132,29 @@ class recipesHandler {
                     
         return ;
     }
+
+    /*
+        概要
+            与えらたusers_idが持っているレシピの総数を返す
+
+        呼び出し
+            usersControllerFunc.account
+
+        引数
+            users_id
+
+        返り値
+            num_recipes
+    */
+    async countRecipes(users_id) {
+        const handle_func = new dbHandleFunc;
+        const query = "SELECT COUNT(*) FROM users WHERE users_id = ?";
+        const values = [users_id];
+                                        
+        const [result] = await handle_func.executeQuery(query, values);
+                            
+        return result;
+    }
 }
 
 module.exports = recipesHandler;
