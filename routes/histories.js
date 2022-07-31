@@ -7,7 +7,7 @@ const historiesController = require('../controller/historiesControlFunc');
 router.get('/', historiesController.index);
 
 /*** histories/history ******************************/
-router.get('/history/:history_id', historiesController.history);
+router.get('/history/:histories_id', historiesController.history);
 
 /*** histories/add ******************************/
 router.get('/add/:recipes_id', historiesController.addGet);

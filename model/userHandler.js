@@ -7,6 +7,10 @@ class usersHandler {
             データベースのテーブルであるusersへの操作のメソットをまとめたクラス
         
         クラスメソッド
+        findUser
+        addUser
+        getUser
+        editUser
 
         メモ
         パスワードはデータベースに入れる前にsha3でハッシュを取る

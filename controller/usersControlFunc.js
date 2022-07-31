@@ -3,10 +3,12 @@ const recipesModelHandler = require('../model/recipesHandler');
 
 const usersController = {
     
+    // users/login
     async loginGet(req, res) {
         res.render('users/login');
     },
 
+    // users/login
     async loginPost(req, res) {
         // 入力データを代入
         const mail_address = "test@test.test";
@@ -21,10 +23,12 @@ const usersController = {
         res.redirect('/recipes/today');
     },
     
+    // users/add
     async addGet(req, res) {
         res.render('users/add');
     },
-    
+
+    // users/add    
     async addPost(req, res) {
         // 入力データを代入
         const mail_address = "test@test.test";
@@ -41,6 +45,7 @@ const usersController = {
         res.redirect('/recipes/today');
     },
 
+    // users/account
     async account(req, res) {
         // ログインチェック
 
@@ -70,6 +75,7 @@ const usersController = {
         res.render('users/account', data);
     },
 
+    // users/edit
     async editGet(req, res) {
         // ログインチェック
 
@@ -99,6 +105,7 @@ const usersController = {
         res.render('users/edit', data);
     },
 
+    // users/edit
     async editPost(req, res) {
         // ログインチェック
 

@@ -82,7 +82,7 @@ class recipesHandler {
         const query = "SELECT recipes_id, name, resorce, way from recipes where recipes_id = ?";
         const values = [recipes_id];
                 
-        const result = await handle_func.executeQuery(query, values);
+        const [result] = await handle_func.executeQuery(query, values);
     
         return result;
     }
