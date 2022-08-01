@@ -1,6 +1,19 @@
 const usersModelHandler = require('../model/userHandler');
 const recipesModelHandler = require('../model/recipesHandler');
 
+const log4js = require("log4js");
+const logger = log4js.getLogger();
+logger.level = "debug";
+
+
+function check(req, res) {
+    if (req.session.users_id == null) {
+      res.redirect('/users/login');
+    } else {
+      return false;
+    }
+}
+
 const usersController = {
     
     // users/login
@@ -10,17 +23,22 @@ const usersController = {
 
     // users/login
     async loginPost(req, res) {
-        // 入力データを代入
-        const mail_address = "test@test.test";
-        const pass = "test";
-
+        const mail_address = req.body.mail_address;
+        const pass = req.body.pass;
+        
+        if(mail_address==null){res.render('users/login');}
+        if(pass==null){res.render('users/login');}
+        
         // users_idを引っ張ってくる
         const users_db = new usersModelHandler;
         const result = await users_db.findUser(mail_address, pass);
 
-        // login処理(passport)
-
-        res.redirect('/recipes/today');
+        if(result.users_id!=null){
+            req.session.users_id = result.users_id;
+            res.redirect('/recipes/today');
+        } else {
+            res.render('users/login');
+        }        
     },
     
     // users/add
@@ -30,27 +48,34 @@ const usersController = {
 
     // users/add    
     async addPost(req, res) {
-        // 入力データを代入
-        const mail_address = "test@test.test";
-        const pass = "test";
+        const mail_address = req.body.mail_address;
+        const pass = req.body.password;
+
+        if(mail_address==null){res.render('users/add');}
+        if(pass==null){res.render('users/add');}
 
         // ユーザーを登録
         const users_db = new usersModelHandler;
         const result = await users_db.addUser(mail_address, pass);
 
         // resultからusers_idを引っ張ってくる
+        const users_id = result.insertId;
 
-        // login処理(passport)
-
-        res.redirect('/recipes/today');
+        req.session.users_id = users_id;
+        let back = req.session.back;
+        if (back == null){
+            back = '/recipes/today';
+        }
+        res.redirect(back);
     },
 
     // users/account
     async account(req, res) {
         // ログインチェック
+        check(req, res);
 
         // seessionからusers_idを引っ張ってくる
-        const users_id = "1";
+        const users_id = req.session.users_id;
 
         // ユーザーの情報を引っ張ってくる
         const users_db = new usersModelHandler;
@@ -78,9 +103,10 @@ const usersController = {
     // users/edit
     async editGet(req, res) {
         // ログインチェック
+        check(req, res);
 
         // seessionからusers_idを引っ張ってくる
-        const users_id = "1";
+        const users_id = req.session.users_id;
 
         // ユーザーの情報を引っ張ってくる
         const users_db = new usersModelHandler;
@@ -93,7 +119,7 @@ const usersController = {
         const data = {
             "mail_address":user.mail_address,
             "recipe_num":num_recipes,
-            "distance":user.recipe_interval
+            "recipe_interval":user.recipe_interval
         }
         /* 
         const data = {
@@ -108,19 +134,24 @@ const usersController = {
     // users/edit
     async editPost(req, res) {
         // ログインチェック
+        check(req, res);
 
         // seessionからusers_idを引っ張ってくる
-        const users_id = "1";
+        const users_id = req.session.users_id;
 
         // フォームから入力データをもってくる
-        const mail_address = "test@test.test";
-        const pass = "test";
-        const recipe_interval = "5";
+        const mail_address = req.body.mail_address;
+        const pass1 = req.body.pass1;
+        const pass2 = req.body.pass2;
+        if(pass1!=pass2){
+            res.redirect('/users/edit');
+        }
+        const recipe_interval = req.body.recipe_interval;
 
         // ユーザーの情報を更新する
         // passは変更がない場合はnull
         const users_db = new usersModelHandler;
-        const user = await users_db.editUser(users_id, mail_address, pass, recipe_interval);        
+        const user = await users_db.editUser(users_id, mail_address, pass1, recipe_interval);        
 
         res.redirect('/users/account');
     }

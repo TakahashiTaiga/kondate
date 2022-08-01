@@ -3,7 +3,7 @@ CREATE TABLE users(
     users_id INT(16) AUTO_INCREMENT NOT NULL,
     mail_address VARCHAR(256) NOT NULL,
     pass VARCHAR(512) NOT NULL,
-    distance INT(8) NOT NULL,
+    recipe_interval INT(8) DEFAULT 7,
     PRIMARY KEY (users_id));
 
 

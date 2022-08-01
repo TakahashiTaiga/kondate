@@ -6,7 +6,11 @@ class historiesHandler {
             データベースのテーブルであるrecipesへの操作のメソッドをまとめたクラス
         
         クラスメソッド
-            
+            getAll    
+            getHistories
+            addHistories
+            editHistories
+
     */
     
     /*
@@ -37,8 +41,8 @@ class historiesHandler {
             与えられたhistories_idに該当するレコードを返す
         
         呼び出し
-            historiesControllerFunc.recipe
-            historiesControllerFunc.edit
+            historiesControllerFunc.history
+            historiesControllerFunc.editGet
         
         引数
             histories_id

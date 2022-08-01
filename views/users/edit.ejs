@@ -16,14 +16,18 @@
     <form method="post" action="/users/edit">
         <div class="contents_title"><h1 class="contents_h1_font">マイアカウント</h1></div>
         
-        <h1 class="contents_sub_title contents_p_font">メールアドレス</h1>
+        <h1 class="contents_sub_title contents_p_font">新しいメールアドレス</h1>
         <div class="mb-3">
-            <input type="text" class="form-control" id="" value="<%- mail_address %>">
+            <input type="text" class="form-control" name="mail_address" value="<%- mail_address %>">
         </div>
         
-        <h1 class="contents_sub_title contents_p_font">パスワード</h1>
+        <h1 class="contents_sub_title contents_p_font">新しいパスワード</h1>
         <div class="mb-3">
-            <input type="text" class="form-control" id="">
+            <input type="text" class="form-control" name="pass1">
+        </div>
+        <h1 class="contents_sub_title contents_p_font">確認用にもう一度パスワードを入力してください</h1>
+        <div class="mb-3">
+            <input type="text" class="form-control" name="pass2">
         </div>
         
         <h1 class="contents_sub_title contents_p_font">マイレシピ</h1>
@@ -31,7 +35,7 @@
 
         <h1 class="contents_sub_title contents_p_font">献立の間隔</h1>
         <div class="mb-3">
-            <input type="text" class="form-control" id="" value="<%- distance %>">
+            <input type="text" class="form-control" name="recipe_interval" value="<%- recipe_interval %>">
         </div>
         
         <div class="contents_foot_btn"><input type="submit" value="完了" class="btn btn-primary"></a></div>

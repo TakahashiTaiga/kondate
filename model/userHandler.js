@@ -1,5 +1,8 @@
 const dbHandleFunc = require('./dbHandleFunc');
 const sha3_512 = require('js-sha3').sha3_512;
+const log4js = require("log4js");
+const logger = log4js.getLogger();
+logger.level = "debug";
 
 class usersHandler {
     /* 
@@ -31,14 +34,16 @@ class usersHandler {
             users_id
     */
     async findUser(mail_address, pass) {
+        logger.debug('findUser called');
         // パスワードのハッシュを取る
         const pass_hash = sha3_512(pass);
-
+        
         const handle_func = new dbHandleFunc;
-        const query = "SELECT users_id from users where mail_address = ?, pass = ?";
+        const query = "SELECT users_id from users WHERE mail_address = ? and pass = ?";
         const values = [mail_address, pass_hash];
                 
         const [result] = await handle_func.executeQuery(query, values);
+        logger.debug(result);
         
         return result;
     }
@@ -57,6 +62,7 @@ class usersHandler {
             users_id
     */
     async addUser(mail_address, pass) {
+        logger.debug('addUser called');
         // パスワードのハッシュを取る
         const pass_hash = sha3_512(pass);
 
@@ -65,7 +71,7 @@ class usersHandler {
         const values = [mail_address, pass_hash];
                         
         const result = await handle_func.executeQuery(query, values);
-                
+        logger.debug(result);
         return result;
     }
 
@@ -84,12 +90,13 @@ class usersHandler {
             mail_address, recipe_interval
     */
     async getUser(users_id) {
+        logger.debug('getUser called');
         const handle_func = new dbHandleFunc;
         const query = "SELECT mail_address, recipe_interval FROM users WHERE users_id = ?";
         const values = [users_id];
                                 
         const [result] = await handle_func.executeQuery(query, values);
-                        
+        logger.debug(result);     
         return result;
     }
 
@@ -107,6 +114,7 @@ class usersHandler {
             なし
     */
     async editUser(users_id, mail_address, pass, recipe_interval) {
+        logger.debug('editUser called');
         let query = "";
         let values = [];
         
@@ -122,7 +130,7 @@ class usersHandler {
         const handle_func = new dbHandleFunc;
                                         
         const result = await handle_func.executeQuery(query, values);
-                                
+        logger.debug(result);                        
         return ;
     }
 }

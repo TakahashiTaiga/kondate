@@ -70,6 +70,7 @@ class recipesHandler {
         呼び出し
             recipesControllerFunc.recipe
             recipesControllerFunc.edit
+            historiesControllerFunc.getRecipe
 
         引数
             recipes_id
@@ -79,7 +80,7 @@ class recipesHandler {
     */
     async getRecipe(recipes_id) {
         const handle_func = new dbHandleFunc;
-        const query = "SELECT recipes_id, name, resorce, way from recipes where recipes_id = ?";
+        const query = "SELECT name, resorce, way from recipes where recipes_id = ?";
         const values = [recipes_id];
                 
         const [result] = await handle_func.executeQuery(query, values);
@@ -152,7 +153,7 @@ class recipesHandler {
         const values = [users_id];
                                         
         const [result] = await handle_func.executeQuery(query, values);
-                            
+        
         return result;
     }
 }

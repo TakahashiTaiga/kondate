@@ -1,13 +1,26 @@
 const recipesModelHandler = require('../model/recipesHandler');
 
+const log4js = require("log4js");
+const logger = log4js.getLogger();
+logger.level = "debug";
+
+function check(req, res) {
+    if (req.session.users_id == null) {
+      res.redirect('/users/login');
+    } else {
+      return false;
+    }
+}
+
 const recipesController = {
     
     // recipes/today
     async today(req, res) {
         // ログインチェック
-        
-        // sessionからusers_idをもってくる
-        const users_id = "0";
+        check(req, res);
+
+        // seessionからusers_idを引っ張ってくる
+        const users_id = req.session.users_id;
 
         const recipes_db = new recipesModelHandler;
         const result = await recipes_db.getForToday(users_id);
@@ -15,30 +28,17 @@ const recipesController = {
         const data = {
             "contents":result
         }
-        /*
-        const data = {
-            "contents":[
-                {
-                    "recipes_id":1,
-                    "name":"チキンソテー",
-                    "resorce":"もも肉<br>ニンニク<br>片栗粉<br>塩コショウ<br>オイル"
-                },
-                {
-                    "recipes_id":2,
-                    "name":"鶏肉のトマト煮",
-                    "resorce":"もも肉<br>トマト缶<br>塩コショウ<br>トマト<br>"
-                }
-        ]}
-        */
+        
         res.render('recipes/today', data);
     },
 
     // recipes/all
     async all(req, res) {
         // ログインチェック
-        
-        // sessionからusers_idをもってくる
-        const users_id = "0";
+        check(req, res);
+
+        // seessionからusers_idを引っ張ってくる
+        const users_id = req.session.users_id;
 
         const recipes_db = new recipesModelHandler;
         const result = await recipes_db.getAll(users_id);
@@ -46,28 +46,17 @@ const recipesController = {
         const data = {
             "contents":result
         }
-        /*
-        const data = {
-            "contents":[
-                {
-                    "recipes_id":1,
-                    "name":"チキンソテー"
-                },
-                {
-                    "recipes_id":2,
-                    "name":"鶏肉のトマト煮"
-                }
-        ]}
-        */
+
         res.render('recipes/all', data);
     },
     
     // recipes/recipe/:recipes_id
     async recipe(req, res) {
         // ログインチェック
-        
-        // URLからrecipes_idをもってくる
-        const recipes_id = "0";
+        check(req, res);
+
+        // seessionからusers_idを引っ張ってくる
+        const recipes_id = req.params.recipes_id * 1;
 
         const recipes_db = new recipesModelHandler;
         const result = await recipes_db.getRecipe(recipes_id);
@@ -91,6 +80,7 @@ const recipesController = {
     // recipes/add
     async addGet(req, res) {
         // ログインチェック
+        check(req, res);
         
         res.render('recipes/add');
     },
@@ -98,14 +88,15 @@ const recipesController = {
     // recipes/add
     async addPost(req, res) {
         // ログインチェック
-        
-        // sessionからusers_idをもってくる
-        const users_id = "0";
+        check(req, res);
+
+        // seessionからusers_idを引っ張ってくる
+        const users_id = req.session.users_id;
 
         // フォームから入力データをもってくる
-        const name = "test";
-        const resorce = "test";
-        const way = "test";
+        const name = req.body.name;
+        const resorce = req.body.resorce;
+        const way = req.body.way;
 
         const recipes_db = new recipesModelHandler;
         const result = await recipes_db.addRecipe(users_id, name, resorce, way);
@@ -116,9 +107,10 @@ const recipesController = {
     // recipes/edit:recipes_id
     async editGet(req, res) {
         // ログインチェック
-        
-        // URLからrecipes_idをもってくる
-        const recipes_id = "0";
+        check(req, res);
+
+        // seessionからusers_idを引っ張ってくる
+        const recipes_id = req.params.recipes_id * 1;
 
         const recipes_db = new recipesModelHandler;
         const result = await recipes_db.getRecipe(recipes_id);
@@ -126,8 +118,14 @@ const recipesController = {
         // <br> -> \nの処理
 
         
-        const data = result;
+        logger.debug(data)
 
+        const data = {
+            "recipes_id":recipes_id,
+            "name":result.name,
+            "resorce":result.resorce,
+            "way":result.way
+        }
         /*
         // <br> -> \n
         const data = {
@@ -143,14 +141,15 @@ const recipesController = {
     // recipes/edit
     async editPost(req, res) {
         // ログインチェック
-        
-        // URLからrecipes_idをもってくる
-        const recipes_id = "0";
+        check(req, res);
+
+        // seessionからusers_idを引っ張ってくる
+        const users_id = req.session.users_id;
 
         // フォームから入力データをもってくる
-        const name = "test";
-        const resorce = "test";
-        const way = "test";
+        const name = req.body.name;
+        const resorce = req.body.resorce;
+        const way = req.body.way;
 
         const recipes_db = new recipesModelHandler;
         const result = await recipes_db.addRecipe(users_id, name, resorce, way);
