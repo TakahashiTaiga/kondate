@@ -7,7 +7,12 @@ const usersController = require('../controller/usersControlFunc');
 /*** users/login ******************************/
 router.get('/login', usersController.loginGet);
 router.post('/login', usersController.loginPost);
-
+/*
+router.post('/login', passport.authenticate('local', 
+{successRedirect: '/recipes/today',
+failureRedirect: '/login',
+session: true}), usersController.loginPost);
+*/
 /*** users/add ******************************/
 router.get('/add', usersController.addGet);
 router.post('/add', usersController.addPost);

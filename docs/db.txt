@@ -1,7 +1,7 @@
 
 CREATE TABLE users(
     users_id INT(16) AUTO_INCREMENT NOT NULL,
-    mail_address VARCHAR(256) NOT NULL,
+    mail_address VARCHAR(256) UNIQUE NOT NULL,
     pass VARCHAR(512) NOT NULL,
     recipe_interval INT(8) DEFAULT 7,
     PRIMARY KEY (users_id));
@@ -11,7 +11,7 @@ CREATE TABLE recipes(
     recipes_id INT(32) AUTO_INCREMENT NOT NULL,
     users_id INT(16),
     name VARCHAR(256) NOT NULL,
-    resorce VARCHAR(512),
+    ingredient VARCHAR(512),
     way VARCHAR(1024),
     PRIMARY KEY (recipes_id),
     FOREIGN KEY (users_id) REFERENCES users(users_id));
@@ -23,7 +23,7 @@ CREATE TABLE histories(
     recipes_id INT(32),
     date VARCHAR(128),
     name VARCHAR(256) NOT NULL,
-    resorce VARCHAR(512),
+    ingredient VARCHAR(512),
     way VARCHAR(1024),
     PRIMARY KEY (histories_id),
     FOREIGN KEY (recipes_id) REFERENCES recipes(recipes_id),

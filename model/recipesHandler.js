@@ -1,4 +1,7 @@
 const dbHandleFunc = require('./dbHandleFunc');
+const log4js = require("log4js");
+const logger = log4js.getLogger();
+logger.level = "debug";
 
 class recipesHandler {
     /* 
@@ -19,7 +22,7 @@ class recipesHandler {
             ・リストをランダムに、履歴分を排除の機能をつける
         
         概要
-            与えられたusers_idに該当する全てのレコードのrecepes_id, name, resorceを返す
+            与えられたusers_idに該当する全てのレコードのrecepes_id, name, ingredientをランダムに並べ替えて返す
 
         呼び出し
             recipesControllerFunc.today
@@ -28,11 +31,11 @@ class recipesHandler {
             users_id
 
         返り値
-            [{"recipes_id":recipes_id, "name":name, "resorce":resorce}, ...]
+            [{"recipes_id":recipes_id, "name":name, "ingredient":ingredient}, ...]
     */
     async getForToday(users_id) {
         const handle_func = new dbHandleFunc;
-        const query = "SELECT recipes_id, name, resorce from recipes where users_id = ?";
+        const query = "SELECT recipes_id, name, ingredient from recipes where users_id = ? ORDER BY RAND()";
         const values = [users_id];
         
         const result = await handle_func.executeQuery(query, values);
@@ -76,11 +79,11 @@ class recipesHandler {
             recipes_id
 
         返り値
-            {"recipes_id":recipes, "name":name, "resorce":resorce, "way":way}
+            {"recipes_id":recipes_id, "name":name, "ingredient":ingredient, "way":way}
     */
     async getRecipe(recipes_id) {
         const handle_func = new dbHandleFunc;
-        const query = "SELECT name, resorce, way from recipes where recipes_id = ?";
+        const query = "SELECT recipes_id, name, ingredient, way from recipes where recipes_id = ?";
         const values = [recipes_id];
                 
         const [result] = await handle_func.executeQuery(query, values);
@@ -96,15 +99,15 @@ class recipesHandler {
             recipesControllerFunc.addPost
 
         引数
-            users_id, name, resorce, way
+            users_id, name, ingredient, way
 
         返り値
             なし
     */
-    async addRecipe(users_id, name, resorce, way) {
+    async addRecipe(users_id, name, ingredient, way) {
         const handle_func = new dbHandleFunc;
-        const query = "INSERT INTO recipes (users_id, name, resorce, way) VALUES (?, ?, ?, ?)";
-        const values = [users_id, name, resorce, way];
+        const query = "INSERT INTO recipes (users_id, name, ingredient, way) VALUES (?, ?, ?, ?)";
+        const values = [users_id, name, ingredient, way];
                         
         const result = await handle_func.executeQuery(query, values);
             
@@ -119,15 +122,15 @@ class recipesHandler {
             recipesControllerFunc.editPost
 
         引数
-            users_id, name, resorce, way
+            users_id, name, ingredient, way
 
         返り値
             なし
     */
-    async editRecipe(recipes_id, name, resorce, way) {
+    async editRecipe(recipes_id, name, ingredient, way) {
         const handle_func = new dbHandleFunc;
-        const query = "UPDATE recipes SET name = ?, resorce = ?, way = ? WHERE recipes_id = ?";
-        const values = [name, resorce, way, recipes_id];
+        const query = "UPDATE recipes SET name = ?, ingredient = ?, way = ? WHERE recipes_id = ?";
+        const values = [name, ingredient, way, recipes_id];
                                 
         const result = await handle_func.executeQuery(query, values);
                     
@@ -149,12 +152,12 @@ class recipesHandler {
     */
     async countRecipes(users_id) {
         const handle_func = new dbHandleFunc;
-        const query = "SELECT COUNT(*) FROM users WHERE users_id = ?";
+        const query = "SELECT COUNT(recipes_id) FROM recipes WHERE users_id = ?";
         const values = [users_id];
                                         
         const [result] = await handle_func.executeQuery(query, values);
-        
-        return result;
+
+        return result['COUNT(recipes_id)'];
     }
 }
 

@@ -13,7 +13,7 @@
     <%- include('../common/header') %>
   
   <div id="contents_main">
-    <form method="post" action="/recipes/edit">
+    <form method="post" action="/recipes/edit/<%= recipes_id %>">
         <div class="contents_name">
             <h1 class="contents_sub_title contents_p_font">レシピ名</h1>
             <div class="mb-3">
@@ -21,10 +21,10 @@
             </div>
         </div>
 
-        <div class="contents_resorce">
+        <div class="contents_ingredient">
             <h1 class="contents_sub_title contents_p_font">材料</h1>
             <div class="mb-3">
-                <textarea class="form-control" name="resorce" id="exampleFormControlTextarea1" rows="5"><%- resorce %></textarea>
+                <textarea class="form-control" name="ingredient" id="exampleFormControlTextarea1" rows="5"><%- ingredient %></textarea>
             </div>
         </div>
         

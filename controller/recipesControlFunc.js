@@ -55,7 +55,7 @@ const recipesController = {
         // ログインチェック
         check(req, res);
 
-        // seessionからusers_idを引っ張ってくる
+        // URLからrecipes_idをひっぱてくる
         const recipes_id = req.params.recipes_id * 1;
 
         const recipes_db = new recipesModelHandler;
@@ -63,14 +63,15 @@ const recipesController = {
 
         // \n -> <br>の処理
 
-
         const data = result;
+
+        logger.debug(data);
         /*
         // \n -> <br>
         const data = {
             "recipes_id":1,
             "name":"チキンソテー",
-            "resorce":"もも肉<br>ニンニク<br>片栗粉<br>塩コショウ<br>オイル",
+            "ingredient":"もも肉<br>ニンニク<br>片栗粉<br>塩コショウ<br>オイル",
             "way":"1. もも肉にした味をつけ片栗粉をまぶす<br>2. フライパンにオイルとニンニクを入れ加熱する<br>3. 1のもも肉をフライパンに入れ加熱する<br>4. 両面を加熱して出来上がり"
         }
         */
@@ -95,11 +96,11 @@ const recipesController = {
 
         // フォームから入力データをもってくる
         const name = req.body.name;
-        const resorce = req.body.resorce;
+        const ingredient = req.body.ingredient;
         const way = req.body.way;
 
         const recipes_db = new recipesModelHandler;
-        const result = await recipes_db.addRecipe(users_id, name, resorce, way);
+        const result = await recipes_db.addRecipe(users_id, name, ingredient, way);
 
         res.redirect('/recipes/all');
     },
@@ -109,7 +110,7 @@ const recipesController = {
         // ログインチェック
         check(req, res);
 
-        // seessionからusers_idを引っ張ってくる
+        // URLからrecipes_idをひっぱてくる
         const recipes_id = req.params.recipes_id * 1;
 
         const recipes_db = new recipesModelHandler;
@@ -117,44 +118,38 @@ const recipesController = {
 
         // <br> -> \nの処理
 
-        
-        logger.debug(data)
+        const data = result;
 
-        const data = {
-            "recipes_id":recipes_id,
-            "name":result.name,
-            "resorce":result.resorce,
-            "way":result.way
-        }
+        logger.debug(data);
         /*
         // <br> -> \n
         const data = {
             "recipes_id":1,
             "name":"チキンソテー",
-            "resorce":"もも肉\nニンニク\n片栗粉\n塩コショウ\nオイル",
+            "ingredient":"もも肉\nニンニク\n片栗粉\n塩コショウ\nオイル",
             "way":"1. もも肉にした味をつけ片栗粉をまぶす\n2. フライパンにオイルとニンニクを入れ加熱する\n3. 1のもも肉をフライパンに入れ加熱する\n4. 両面を加熱して出来上がり"
         }
         */
         res.render('recipes/edit', data);
     },
 
-    // recipes/edit
+    // recipes/edit/:recipes_id
     async editPost(req, res) {
         // ログインチェック
         check(req, res);
 
-        // seessionからusers_idを引っ張ってくる
-        const users_id = req.session.users_id;
+        // URLからrecipes_idをひっぱてくる
+        const recipes_id = req.params.recipes_id * 1;
 
         // フォームから入力データをもってくる
         const name = req.body.name;
-        const resorce = req.body.resorce;
+        const ingredient = req.body.ingredient;
         const way = req.body.way;
 
         const recipes_db = new recipesModelHandler;
-        const result = await recipes_db.addRecipe(users_id, name, resorce, way);
+        const result = await recipes_db.editRecipe(recipes_id, name, ingredient, way);
 
-        res.redirect('/recipes/recipe/:recipes_id');
+        res.redirect('/recipes/recipe/'+recipes_id);
     }
 
 }

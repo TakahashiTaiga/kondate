@@ -15,9 +15,9 @@
   <div id="contents_main">
     <div class="contents_title"><h1 class="contents_h1_font"><%- name %></h1></div>
     
-    <div class="contents_resorce">
+    <div class="contents_ingredient">
         <h1 class="contents_sub_title contents_p_font">材料</h1>
-        <div class="contents_resorce_area"><p class="contents_p_font"><%- resorce %></p></div>
+        <div class="contents_ingredient_area"><p class="contents_p_font"><%- ingredient %></p></div>
     </div>
     
     <div class="contents_way">
@@ -26,8 +26,8 @@
     </div>
 
     <div class="contents_footer">
-        <div class="contents_footer_element"><a href="/recipes/edit/:<%= recipes_id%>"><button type="button" class="btn btn-outline-primary">レシピの編集</button></button></a></div>
-        <div class="contents_footer_element"><a href="/histories/add/:<%= recipes_id%>"><button type="button" class="btn btn-primary">履歴に登録</button></a></div>
+        <div class="contents_footer_element"><a href="/recipes/edit/<%= recipes_id %>"><button type="button" class="btn btn-outline-primary">レシピの編集</button></button></a></div>
+        <div class="contents_footer_element"><a href="/histories/add/<%= recipes_id %>"><button type="button" class="btn btn-primary">履歴に登録</button></a></div>
     </div>
 
   </div>    

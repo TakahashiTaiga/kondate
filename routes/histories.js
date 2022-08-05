@@ -11,11 +11,11 @@ router.get('/history/:histories_id', historiesController.history);
 
 /*** histories/add ******************************/
 router.get('/add/:recipes_id', historiesController.addGet);
-router.post('/add', historiesController.addPost);
+router.post('/add/:recipes_id', historiesController.addPost);
 
 /*** histories/edit ******************************/
 router.get('/edit/:histories_id', historiesController.editGet);
-router.post('/edit', historiesController.editPost);
+router.post('/edit/:histories_id', historiesController.editPost);
 
 
 module.exports = router;

@@ -37,7 +37,7 @@ const usersController = {
             req.session.users_id = result.users_id;
             res.redirect('/recipes/today');
         } else {
-            res.render('users/login');
+            res.redirect('/users/login');
         }        
     },
     
@@ -59,14 +59,9 @@ const usersController = {
         const result = await users_db.addUser(mail_address, pass);
 
         // resultからusers_idを引っ張ってくる
-        const users_id = result.insertId;
+        req.session.users_id = result.insertId;
 
-        req.session.users_id = users_id;
-        let back = req.session.back;
-        if (back == null){
-            back = '/recipes/today';
-        }
-        res.redirect(back);
+        res.redirect('/recipes/today');
     },
 
     // users/account
@@ -87,14 +82,14 @@ const usersController = {
 
         const data = {
             "mail_address":user.mail_address,
-            "recipe_num":num_recipes,
-            "distance":user.recipe_interval
+            "recipe_num":num_recipes + '件',
+            "recipe_interval":user.recipe_interval + '日'
         }
         /* 
         const data = {
             "mail_address":"test@test.test",
             "recipe_num":"2件",
-            "distance":"5日"
+            "recipe_interval":"5日"
         }
         */
         res.render('users/account', data);
@@ -125,7 +120,7 @@ const usersController = {
         const data = {
             "mail_address":"test@test.test",
             "recipe_num":"2件",
-            "distance":"5日"
+            "recipe_interval":"5日"
         }
         */
         res.render('users/edit', data);

@@ -1,4 +1,7 @@
 const dbHandleFunc = require('./dbHandleFunc');
+const log4js = require("log4js");
+const logger = log4js.getLogger();
+logger.level = "debug";
 
 class historiesHandler {
     /* 
@@ -48,15 +51,17 @@ class historiesHandler {
             histories_id
         
         返り値
-            {"recipes_id":recipes, "name":name, "resorce":resorce, "way":way}
+            {"histories_id":histories_id, "name":name, "ingredient":ingredient, "way":way, "date":date}
     */
     async getHistories(histories_id) {
         const handle_func = new dbHandleFunc;
-        const query = "SELECT name, resorce, way, date from histories where histories_id = ?";
+        const query = "SELECT histories_id, name, ingredient, way, date from histories where histories_id = ?";
         const values = [histories_id];
                         
         const [result] = await handle_func.executeQuery(query, values);
             
+        logger.debug(result);
+
         return result;
     }
         
@@ -68,15 +73,15 @@ class historiesHandler {
             historiesControllerFunc.addPost
         
         引数
-            users_id, recipes_id, name, resorce, way, date
+            users_id, recipes_id, name, ingredient, way, date
         
         返り値
             なし
     */
-    async addHistories(users_id, recipes_id, name, resorce, way, date) {
+    async addHistories(users_id, recipes_id, name, ingredient, way, date) {
         const handle_func = new dbHandleFunc;
-        const query = "INSERT INTO histories (users_id, recipes_id, name, resorce, way, date) VALUES (?, ?, ?, ?, ?, ?)";
-        const values = [users_id, recipes_id, name, resorce, way, date];
+        const query = "INSERT INTO histories (users_id, recipes_id, name, ingredient, way, date) VALUES (?, ?, ?, ?, ?, ?)";
+        const values = [users_id, recipes_id, name, ingredient, way, date];
                                 
         const result = await handle_func.executeQuery(query, values);
                     
@@ -91,15 +96,15 @@ class historiesHandler {
             historiesControllerFunc.editPost
         
         引数
-            users_id, name, resorce, way
+            histories_id, name, ingredient, way, date
         
         返り値
             なし
     */
-    async editHistories(histories_id, name, resorce, way, date) {
+    async editHistories(histories_id, name, ingredient, way, date) {
         const handle_func = new dbHandleFunc;
-        const query = "UPDATE recipes SET name = ?, resorce = ?, way = ?, date = ? WHERE histories_id = ?";
-        const values = [name, resorce, way, date, histories_id];
+        const query = "UPDATE histories SET name = ?, ingredient = ?, way = ?, date = ? WHERE histories_id = ?";
+        const values = [name, ingredient, way, date, histories_id];
                                         
         const result = await handle_func.executeQuery(query, values);
                             

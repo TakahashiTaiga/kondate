@@ -30,6 +30,8 @@ const session_opt = {
 };
 app.use(session(session_opt));
 
+// require("./config/passport")(app);
+
 app.use('/histories', historiesRouter);
 app.use('/recipes', recipesRouter);
 app.use('/users', usersRouter);

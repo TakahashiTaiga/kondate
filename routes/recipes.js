@@ -18,7 +18,7 @@ router.post('/add', recipesController.addPost);
 
 /*** recipes/edit ******************************/
 router.get('/edit/:recipes_id', recipesController.editGet);
-router.post('/edit', recipesController.editPost);
+router.post('/edit/:recipes_id', recipesController.editPost);
 
 
 module.exports = router;
