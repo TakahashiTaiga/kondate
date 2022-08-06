@@ -1,5 +1,7 @@
 const dbHandleFunc = require('./dbHandleFunc');
 const sha3_512 = require('js-sha3').sha3_512;
+const crypto = require('crypto');
+
 const log4js = require("log4js");
 const logger = log4js.getLogger();
 logger.level = "debug";
@@ -36,11 +38,13 @@ class usersHandler {
     async findUser(mail_address, pass) {
         logger.debug('findUser called');
         // パスワードのハッシュを取る
-        const pass_hash = sha3_512(pass);
+        const hash_pass = crypto.createHash('sha256', process.env.CRYPTO_PASS)
+                    .update(pass)
+                    .digest('hex');
         
         const handle_func = new dbHandleFunc;
         const query = "SELECT users_id from users WHERE mail_address = ? and pass = ?";
-        const values = [mail_address, pass_hash];
+        const values = [mail_address, hash_pass];
                 
         const [result] = await handle_func.executeQuery(query, values);
         logger.debug(result);
@@ -64,11 +68,13 @@ class usersHandler {
     async addUser(mail_address, pass) {
         logger.debug('addUser called');
         // パスワードのハッシュを取る
-        const pass_hash = sha3_512(pass);
+        const hash_pass = crypto.createHash('sha256', process.env.CRYPTO_PASS)
+                    .update(pass)
+                    .digest('hex');
 
         const handle_func = new dbHandleFunc;
         const query = "INSERT INTO users (mail_address, pass) VALUES (?, ?)";
-        const values = [mail_address, pass_hash];
+        const values = [mail_address, hash_pass];
                         
         const result = await handle_func.executeQuery(query, values);
         logger.debug(result);
@@ -122,7 +128,9 @@ class usersHandler {
             query = "UPDATE users SET mail_address = ?, recipe_interval = ? WHERE users_id = ?";
             values = [mail_address, recipe_interval, users_id];
         } else {
-            const hash_pass = sha3_512(pass);
+            const hash_pass = crypto.createHash('sha256', process.env.CRYPTO_PASS)
+                    .update(pass)
+                    .digest('hex');
             query = "UPDATE users SET mail_address = ?, pass = ?, recipe_interval = ? WHERE users_id = ?";
             values = [mail_address, hash_pass, recipe_interval, users_id];
         }

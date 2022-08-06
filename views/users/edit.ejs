@@ -14,6 +14,8 @@
   
   <div id="contents_main">
     <form method="post" action="/users/edit">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            
         <div class="contents_title"><h1 class="contents_h1_font">マイアカウント</h1></div>
         
         <h1 class="contents_sub_title contents_p_font">新しいメールアドレス</h1>
@@ -34,10 +36,24 @@
         <div class="contents_way_area"><p class="contents_p_font"><%- recipe_num %></p></div>
 
         <h1 class="contents_sub_title contents_p_font">献立の間隔</h1>
+        <div class="contents_form_num contents_form_date_element">
+          <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="recipe_interval">
+              <% let count = 0; %>
+              <% while (count <= 31) { %>
+                  <% if (count != recipe_interval) { %>
+                      <option value="<%= count %>"><%- count %></option>
+                  <% } else { %>
+                      <option value="<%= count %>" selected><%- count %></option>
+                  <% } %>
+                  <% count++; %>
+              <% } %>
+          </select>
+      </div>
+      <!---
         <div class="mb-3">
             <input type="text" class="form-control" name="recipe_interval" value="<%- recipe_interval %>">
         </div>
-        
+      -->
         <div class="contents_foot_btn"><input type="submit" value="完了" class="btn btn-primary"></a></div>
     </form>
   </div>    

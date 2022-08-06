@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
 require('dotenv').config();
+const helmet = require("helmet");
+const csrf = require('csurf');
 
 const historiesRouter = require('./routes/histories');
 const recipesRouter = require('./routes/recipes');
@@ -16,6 +18,7 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,6 +31,8 @@ const session_opt = {
   saveUninitialized: false, 
   cookie: { maxAge: 60 * 60 * 1000 }
 };
+// falseにしてみる
+const csrfProtection = csrf({ cookie: true });
 app.use(session(session_opt));
 
 // require("./config/passport")(app);

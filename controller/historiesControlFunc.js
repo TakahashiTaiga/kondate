@@ -96,7 +96,8 @@ const historiesController = {
             "ingredient":result.ingredient,
             "way":result.way,
             "month":month,
-            "day":day
+            "day":day,
+            csrfToken: req.csrfToken()
         }
 
         /*
@@ -163,7 +164,8 @@ const historiesController = {
             "ingredient":result.ingredient,
             "way":result.way,
             "month":month,
-            "day":day
+            "day":day,
+            csrfToken: req.csrfToken()
         }
         res.render('histories/edit', data)
     },
@@ -190,6 +192,39 @@ const historiesController = {
 
         const histories_db = new historiesModelHandler;
         const result = await histories_db.editHistories(histories_id, name, ingredient, way, date);
+
+        res.redirect('/histories/');
+    },
+
+    // recipes/delete/:histories_id
+    async deleteGet(req, res) {
+        // ログインチェック
+        check(req, res);
+
+        // URLからrecipes_idをひっぱてくる
+        const histories_id = req.params.histories_id * 1;
+
+        const histories_db = new historiesModelHandler;
+        const result = await histories_db.getHistories(histories_id);
+
+        const data = {
+            "name":result.name,
+            "histories_id":histories_id,
+            csrfToken: req.csrfToken()
+        }
+        res.render('histories/delete', data)
+    },
+
+    // recipes/delete/:histories_id
+    async deletePost(req, res) {
+        // ログインチェック
+        check(req, res);
+
+        // URLからrecipes_idをひっぱてくる
+        const histories_id = req.params.histories_id * 1;
+
+        const histories_db = new historiesModelHandler;
+        const result = await histories_db.deleteHistories(histories_id);
 
         res.redirect('/histories/');
     }

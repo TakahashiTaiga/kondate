@@ -184,17 +184,15 @@
   -webkit-justify-content: space-between;
   justify-content: space-between;
 
-  width: 400px;
+  width: 440px;
 
-  margin-top: 70px;
-  margin-right: 20px;
-  margin-left: 20px;
+  margin-top: 50px;
 }
 
 .contents_foot_btn {
   margin-top: 30px;
   display: flex;
- justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 

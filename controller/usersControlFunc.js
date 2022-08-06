@@ -1,3 +1,5 @@
+const csrf = require('csurf');
+
 const usersModelHandler = require('../model/userHandler');
 const recipesModelHandler = require('../model/recipesHandler');
 
@@ -18,7 +20,11 @@ const usersController = {
     
     // users/login
     async loginGet(req, res) {
-        res.render('users/login');
+        //token
+        const data = {
+            csrfToken: req.csrfToken()
+        }
+        res.render('users/login', data);
     },
 
     // users/login
@@ -37,13 +43,20 @@ const usersController = {
             req.session.users_id = result.users_id;
             res.redirect('/recipes/today');
         } else {
-            res.redirect('/users/login');
-        }        
+            const data = {
+                csrfToken: req.csrfToken()
+            }
+            res.redirect('/users/login', data);
+        } 
     },
     
     // users/add
     async addGet(req, res) {
-        res.render('users/add');
+        // token
+        const data = {
+            csrfToken: req.csrfToken()
+        }
+        res.render('users/add', data);
     },
 
     // users/add    
@@ -85,13 +98,7 @@ const usersController = {
             "recipe_num":num_recipes + '件',
             "recipe_interval":user.recipe_interval + '日'
         }
-        /* 
-        const data = {
-            "mail_address":"test@test.test",
-            "recipe_num":"2件",
-            "recipe_interval":"5日"
-        }
-        */
+
         res.render('users/account', data);
     },
 
@@ -111,18 +118,13 @@ const usersController = {
         const recipes_db = new recipesModelHandler;
         const num_recipes = await recipes_db.countRecipes(users_id);
 
+        // token
         const data = {
             "mail_address":user.mail_address,
             "recipe_num":num_recipes,
-            "recipe_interval":user.recipe_interval
+            "recipe_interval":user.recipe_interval,
+            csrfToken: req.csrfToken()
         }
-        /* 
-        const data = {
-            "mail_address":"test@test.test",
-            "recipe_num":"2件",
-            "recipe_interval":"5日"
-        }
-        */
         res.render('users/edit', data);
     },
 

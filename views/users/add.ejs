@@ -14,6 +14,7 @@
     <h1 class="form_title">アカウント作成</h1>
     <div class="form_contents">
         <form method="post" action="/users/add">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="inner_form">
                 <div  class="form_elements">
                     <div class="mb-3">

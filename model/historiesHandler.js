@@ -110,6 +110,28 @@ class historiesHandler {
                             
         return ;
     }
+    
+    /*
+        概要
+            与えらたhistories_idのレシピを削除する
+
+        呼び出し
+            historiesControllerFunc.deleteGet
+
+        引数
+            histories_id
+
+        返り値
+    */
+    async deleteHistories(histories_id) {
+        const handle_func = new dbHandleFunc;
+        const query = "DELETE FROM histories WHERE histories_id = ?";
+        const values = [histories_id];
+                                                
+        const result = await handle_func.executeQuery(query, values);
+        
+        return
+    }
         
 }
 

@@ -82,8 +82,12 @@ const recipesController = {
     async addGet(req, res) {
         // ログインチェック
         check(req, res);
+
+        const data = {
+            csrfToken: req.csrfToken()
+        }
         
-        res.render('recipes/add');
+        res.render('recipes/add', data);
     },
     
     // recipes/add
@@ -118,18 +122,14 @@ const recipesController = {
 
         // <br> -> \nの処理
 
-        const data = result;
-
-        logger.debug(data);
-        /*
-        // <br> -> \n
         const data = {
-            "recipes_id":1,
-            "name":"チキンソテー",
-            "ingredient":"もも肉\nニンニク\n片栗粉\n塩コショウ\nオイル",
-            "way":"1. もも肉にした味をつけ片栗粉をまぶす\n2. フライパンにオイルとニンニクを入れ加熱する\n3. 1のもも肉をフライパンに入れ加熱する\n4. 両面を加熱して出来上がり"
+            "recipes_id":result.recipes_id,
+            "name":result.name,
+            "ingredient":result.ingredient,
+            "way":result.way,
+            csrfToken: req.csrfToken()
         }
-        */
+        
         res.render('recipes/edit', data);
     },
 
@@ -150,8 +150,23 @@ const recipesController = {
         const result = await recipes_db.editRecipe(recipes_id, name, ingredient, way);
 
         res.redirect('/recipes/recipe/'+recipes_id);
-    }
+    },
 
+    // recipes/delete/:recipes_id
+    /*
+    async deleteGet(req, res) {
+        // ログインチェック
+        check(req, res);
+
+        // URLからrecipes_idをひっぱてくる
+        const recipes_id = req.params.recipes_id * 1;
+
+        const recipes_db = new recipesModelHandler;
+        const result = await recipes_db.editRecipe(recipes_id);
+
+        res.redirect('/recipes/all');
+    }
+    */
 }
 
 module.exports = recipesController;

@@ -159,6 +159,30 @@ class recipesHandler {
 
         return result['COUNT(recipes_id)'];
     }
+
+    /*
+        概要
+            与えらたrecipes_idのレシピを削除する
+
+        呼び出し
+            usersControllerFunc.deleteGet
+
+        引数
+            recipes_id
+
+        返り値
+    */
+   /*
+    async deleteRecipe(recipes_id) {
+        const handle_func = new dbHandleFunc;
+        const query = "DELETE FROM recipes WHERE recipes_id = ?";
+        const values = [recipes_id];
+                                                
+        const result = await handle_func.executeQuery(query, values);
+        
+        return
+    }
+    */
 }
 
 module.exports = recipesHandler;
