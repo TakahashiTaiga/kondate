@@ -22,21 +22,21 @@ class recipesHandler {
             ・リストをランダムに、履歴分を排除の機能をつける
         
         概要
-            与えられたusers_idに該当する全てのレコードのrecepes_id, name, ingredientをランダムに並べ替えて返す
+            与えられたusers_idに該当するレコードのうちdateよりも前の日付のレコードのrecepes_id, name, ingredientをランダムに並べ替えて返す
 
         呼び出し
             recipesControllerFunc.today
 
         引数
-            users_id
+            users_id, date
 
         返り値
             [{"recipes_id":recipes_id, "name":name, "ingredient":ingredient}, ...]
     */
-    async getForToday(users_id) {
+    async getForToday(users_id, date) {
         const handle_func = new dbHandleFunc;
-        const query = "SELECT recipes_id, name, ingredient from recipes where users_id = ? ORDER BY RAND()";
-        const values = [users_id];
+        const query = "SELECT recipes.recipes_id, recipes.name, recipes.ingredient FROM recipes, histories WHERE recipes.users_id = histories.users_id and recipes.users_id = ? and histories.date < ? ORDER BY RAND()";
+        const values = [users_id, date];
         
         const result = await handle_func.executeQuery(query, values);
 

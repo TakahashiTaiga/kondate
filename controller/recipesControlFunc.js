@@ -1,4 +1,6 @@
 const recipesModelHandler = require('../model/recipesHandler');
+const usersModelHandler = require('../model/usersHandler');
+const { DateTime } = require("luxon");
 
 const log4js = require("log4js");
 const logger = log4js.getLogger();
@@ -22,8 +24,15 @@ const recipesController = {
         // seessionからusers_idを引っ張ってくる
         const users_id = req.session.users_id;
 
+        const users_db = new usersModelHandler;
+        const user = await users_db.getUser(users_id);
+
+        const today = DateTime.local();
+        const date = today.plus({ days: -1 * Number(user.recipe_interval) });
+        const formated_date =date.toFormat('yyyy-MM-dd');
+
         const recipes_db = new recipesModelHandler;
-        const result = await recipes_db.getForToday(users_id);
+        const result = await recipes_db.getForToday(users_id, formated_date);
 
         const data = {
             "contents":result

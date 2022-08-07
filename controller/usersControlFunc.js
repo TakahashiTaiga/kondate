@@ -1,6 +1,6 @@
 const csrf = require('csurf');
 
-const usersModelHandler = require('../model/userHandler');
+const usersModelHandler = require('../model/usersHandler');
 const recipesModelHandler = require('../model/recipesHandler');
 
 const log4js = require("log4js");

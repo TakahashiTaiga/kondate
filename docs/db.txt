@@ -21,7 +21,7 @@ CREATE TABLE histories(
     histories_id INT(32) AUTO_INCREMENT NOT NULL,
     users_id INT(16),
     recipes_id INT(32),
-    date VARCHAR(128),
+    date DATE,
     name VARCHAR(256) NOT NULL,
     ingredient VARCHAR(512),
     way VARCHAR(1024),

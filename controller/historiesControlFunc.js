@@ -1,5 +1,6 @@
 const historiesModelHandler = require('../model/historiesHandler');
 const recipesModelHandler = require('../model/recipesHandler');
+const { DateTime } = require("luxon");
 
 const log4js = require("log4js");
 const logger = log4js.getLogger();
@@ -29,21 +30,6 @@ const historiesController = {
         const data = {
             "contents":result
         }
-        /*
-        const data = {
-            "contents":[
-                {
-                    "histories_id":1,
-                    "name":"チキンソテー",
-                    "date":"7月5日"
-                },
-                {
-                    "recipes_id":2,
-                    "name":"鶏肉のトマト煮",
-                    "date":"7月4日"
-                }
-        ]}
-        */
         res.render('histories/index', data);
     },
 
@@ -87,29 +73,23 @@ const historiesController = {
         // \n -> <br>の処理
 
         // 日にち
-        const month = 7;
-        const day = 5;
+        const today = DateTime.local();
+        const date = today.toFormat('YYYY-MM-dd').split('-');
+        const year = Number(date[0]);
+        const month = Number(date[1]);
+        const day = Number(date[2]);
 
         const data = {
             "recipes_id":recipes_id,
             "name":result.name,
             "ingredient":result.ingredient,
             "way":result.way,
+            "year":year,
             "month":month,
             "day":day,
             csrfToken: req.csrfToken()
         }
 
-        /*
-        const data = {
-            "recipes_id":1,
-            "name":"チキンソテー",
-            "ingredient":"もも肉\nニンニク\n片栗粉\n塩コショウ\nオイル",
-            "way":"1. もも肉にした味をつけ片栗粉をまぶす\n2. フライパンにオイルとニンニクを入れ加熱する\n3. 1のもも肉をフライパンに入れ加熱する\n4. 両面を加熱して出来上がり",
-            "month":7,
-            "day":5
-        }
-        */
         res.render('histories/add', data);
     },
     
@@ -128,11 +108,12 @@ const historiesController = {
         const name = req.body.name;
         const ingredient = req.body.ingredient;
         const way = req.body.way;
+        const year = req.body.year;
         const month = req.body.month;
         const day = req.body.day;
 
         // 日にち処理
-        const date = month + "月" + day + "日";
+        const date = year + '-' + month + '-' + day;
 
         const histories_db = new historiesModelHandler;
         const result = await histories_db.addHistories(users_id, recipes_id, name, ingredient, way, date);
@@ -154,15 +135,17 @@ const historiesController = {
         // \n -> <br>の処理
 
         // 日にち処理
-        const date = result.date.split('月');
-        const month = Number(date[0]);
-        const day = Number(date[1].replace('日', ''));
+        const date = result.date.split('-');
+        const year = Number(date[0]);
+        const month = Number(date[1]);
+        const day = Number(date[2]);
 
         const data = {
             "histories_id":histories_id,
             "name":result.name,
             "ingredient":result.ingredient,
             "way":result.way,
+            "year":year,
             "month":month,
             "day":day,
             csrfToken: req.csrfToken()
@@ -182,11 +165,12 @@ const historiesController = {
         const name = req.body.name;
         const ingredient = req.body.ingredient;
         const way = req.body.way;
+        const year = req.body.year;
         const month = req.body.month;
         const day = req.body.day;
 
         // 日にち処理
-        const date = month + '月' + day + '日';
+        const date = year + '-' + month + '-' + day;
 
         logger.debug(date);
 

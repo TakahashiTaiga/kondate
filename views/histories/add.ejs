@@ -24,9 +24,25 @@
 
         <h1 class="contents_sub_title contents_p_font">日付</h1>
         <div class="contents_form_date">
+            <div class="contents_form_year contents_form_date_element">
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="year">
+                    <% let count = 2020; %>
+                    <% while (count <= 2050) { %>
+                        <% if (count != year) { %>
+                            <option value="<%= count %>"><%- count %></option>
+                        <% } else { %>
+                            <option value="<%= count %>" selected><%- count %></option>
+                        <% } %>
+                        <% count++; %>
+                    <% } %>
+                </select>
+            </div>
+            <div>
+                <p class="contents_p_font contents_form_date_element">/</p>
+            </div>
             <div class="contents_form_num contents_form_date_element">
                 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="month">
-                    <% let count = 1; %>
+                    <% count = 1; %>
                     <% while (count <= 12) { %>
                         <% if (count != month) { %>
                             <option value="<%= count %>"><%- count %></option>

@@ -205,6 +205,10 @@
   display: flex;
 }
 
+.contents_form_year{
+  width: 100px;
+}
+
 .contents_form_num {
   width: 80px;
 }

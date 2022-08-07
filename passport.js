@@ -1,7 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const cookieSession = require("cookie-session");
-const usersModelHandler = require('./model/userHandler');
+const usersModelHandler = require('./model/usersHandler');
 const session = require('express-session'); // 追記
 
 
