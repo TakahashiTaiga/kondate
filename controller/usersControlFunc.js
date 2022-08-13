@@ -39,14 +39,14 @@ const usersController = {
         const users_db = new usersModelHandler;
         const result = await users_db.findUser(mail_address, pass);
 
-        if(result.users_id!=null){
+        try {
             req.session.users_id = result.users_id;
             res.redirect('/recipes/today');
-        } else {
+        } catch (error) {
             const data = {
                 csrfToken: req.csrfToken()
             }
-            res.redirect('/users/login', data);
+            res.render('users/login', data);
         } 
     },
     
@@ -71,10 +71,16 @@ const usersController = {
         const users_db = new usersModelHandler;
         const result = await users_db.addUser(mail_address, pass);
 
-        // resultからusers_idを引っ張ってくる
-        req.session.users_id = result.insertId;
-
-        res.redirect('/recipes/today');
+        
+        try {
+            // ログイン処理
+            // resultからusers_idを引っ張ってくる
+            req.session.users_id = result.insertId;
+            res.redirect('/recipes/today');
+        } catch (error) {
+            // メールアドレスの一意制約に引っかかった
+            res.redirect('/users/add');
+        }
     },
 
     // users/account

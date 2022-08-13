@@ -29,11 +29,11 @@ const recipesController = {
 
         const today = DateTime.local();
         const date = today.plus({ days: -1 * Number(user.recipe_interval) });
-        const formated_date =date.toFormat('yyyy-MM-dd');
+        const formated_date = date.toFormat('yyyy-MM-dd');
 
         const recipes_db = new recipesModelHandler;
         const result = await recipes_db.getForToday(users_id, formated_date);
-
+        
         const data = {
             "contents":result
         }

@@ -19,6 +19,18 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+      directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+          objectSrc: ["'none'"],
+          styleSrc: ["'self'", "https://cdn.jsdelivr.net"],
+          upgradeInsecureRequests: [],
+      },
+  })
+);
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

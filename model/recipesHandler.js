@@ -35,8 +35,8 @@ class recipesHandler {
     */
     async getForToday(users_id, date) {
         const handle_func = new dbHandleFunc;
-        const query = "SELECT recipes.recipes_id, recipes.name, recipes.ingredient FROM recipes, histories WHERE recipes.users_id = histories.users_id and recipes.users_id = ? and histories.date < ? ORDER BY RAND()";
-        const values = [users_id, date];
+        const query = "select recipes_id, name, ingredient from recipes where users_id = ? and recipes_id not in (select recipes_id from histories where users_id = ? and date > ?) order by rand()";
+        const values = [users_id, users_id, date];
         
         const result = await handle_func.executeQuery(query, values);
 
