@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
 const csrf = require('csurf');
 const csrfProtection = csrf({ cookie: true });
 const usersController = require('../controller/usersControlFunc');
